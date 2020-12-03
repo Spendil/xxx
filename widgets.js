@@ -38,20 +38,3 @@ export const create = async (query, variables, config) => {
 	}
 	vegaEmbed('#vis', cfg)
 }
-
-/* `
-	<link>blablabla</link>
-	<div #id="vis"></div>
-	<script>
-			widgets.create(${query}, ${variables}, {
-				$schema: 'https://vega.github.io/schema/vega-lite/v4.json',
-				description: 'A simple bar chart with embedded data.',
-				mark: 'bar',
-				encoding: {
-					x: {field: ${cfg.encoding.x.field}, type: 'ordinal},
-					y: {field: ${cfg.encoding.y.field}, type: 'quantitative},
-				}
-				data: bitcoin.blocks
-			}})
-	</script>
-	` */
