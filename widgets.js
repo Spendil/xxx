@@ -1,7 +1,6 @@
 import vega from 'vega'
 import vegaLite from 'vega-lite'
 import vegaEmbed from 'vega-embed'
-
 const getValueFrom = (o, s) => {
     s = s.replace(/\[(\w+)\]/g, '.$1'); 
     s = s.replace(/^\./, '');           
@@ -30,6 +29,7 @@ const fetcher = (graphQLParams) => {
 		},
 	)
 }
+
 export const create = async (query, variables, config) => {
 	let queryResult = ''
 	let cfg = {}
@@ -37,16 +37,18 @@ export const create = async (query, variables, config) => {
 	data.json().then(json => {
 		if ('data' in json) {
 			queryResult = json.data
+			let values = getValueFrom(queryResult, config.data)
+			cfg = {
+				...config,
+				data: {
+					values
+				}
+			}
+			console.log(cfg)
+			vegaEmbed('#vis', cfg)
 		} else {
 			console.log(JSON.stringify(json.errors, null, 2))
 		}
 	})
-	let values = getValueFrom(queryResult, config.data)
-	cfg = {
-		...config,
-		data: {
-			values
-		}
-	}
-	vegaEmbed('#vis', cfg)
+	
 }
