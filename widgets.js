@@ -1,8 +1,21 @@
-import { getValueFrom } from '../../utils/common'
 import vega from 'vega'
 import vegaLite from 'vega-lite'
 import vegaEmbed from 'vega-embed'
 
+const getValueFrom = (o, s) => {
+    s = s.replace(/\[(\w+)\]/g, '.$1'); 
+    s = s.replace(/^\./, '');           
+    var a = s.split('.');
+    for (var i = 0, n = a.length; i < n; ++i) {
+        var k = a[i];
+        if (k in o) {
+            o = o[k];
+        } else {
+            return;
+        }
+    }
+    return o;
+}
 const fetcher = (graphQLParams) => {
 	return fetch(
 		'https://graphql.bitquery.io',
@@ -17,7 +30,6 @@ const fetcher = (graphQLParams) => {
 		},
 	)
 }
-
 export const create = async (query, variables, config) => {
 	let queryResult = ''
 	let cfg = {}
